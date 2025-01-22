@@ -1,0 +1,177 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["relationJoins"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum DaysOfWeek {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
+}
+
+enum AuthStatus {
+  PENDING
+  SENT
+  CONFIRMED
+  CANCELLED
+}
+
+enum VideoOwner {
+  USER
+  TRAINER
+}
+
+enum VideoFormat {
+  MP4
+  MOV
+  AVI
+  FLV
+  WMV
+  MKV
+  WEBM
+}
+
+enum SetType {
+  DEFAULT
+  USER_HISTORY
+  TRAINER
+  TRAINER_HISTORY
+}
+
+model User {
+  id           String   @id @default(uuid())
+  firstName    String   @default("")
+  lastName     String   @default("")
+  email        String   @unique
+  phone        String?
+  passwordHash String?
+  googleIdHash String?
+  imgUrl       String?
+  createdAt    DateTime @default(now())
+  trainer      Trainer?
+  trainee      Trainee?
+}
+
+model Trainee {
+  id        String             @id @default(uuid())
+  userId    String             @unique
+  user      User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  programs  Program[]
+  trainings PersonalTraining[]
+  trainerId String?
+  trainer   Trainer?           @relation(fields: [trainerId], references: [id])
+  metrics   TraineeMetrics[]
+}
+
+model TraineeMetrics {
+  id                    String   @id @default(uuid())
+  traineeId             String
+  trainee               Trainee  @relation(fields: [traineeId], references: [id], onDelete: Cascade)
+  heartRate             Int?
+  weight                Float?
+  height                Float?
+  age                   Float?
+  bloodPressureSystole  Int?
+  bloodPressureDiastole Int?
+  date                  DateTime @default(now())
+}
+
+model Trainer {
+  id       String    @id @default(uuid())
+  userId   String    @unique
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  trainees Trainee[]
+  programs Program[]
+}
+
+model Program {
+  id        String             @id @default(uuid())
+  name      String             @default("Program")
+  startDate DateTime
+  endDate   DateTime
+  isActive  Boolean
+  days      DaysOfWeek[]
+  trainings PersonalTraining[]
+  traineeId String?
+  trainee   Trainee?           @relation(fields: [traineeId], references: [id], onDelete: Cascade)
+  trainerId String?
+  trainer   Trainer?           @relation(fields: [trainerId], references: [id], onDelete: Cascade)
+}
+
+model Training {
+  id                  String             @id @default(uuid())
+  name                String
+  description         String             @default("")
+  defaultSets         Set[]
+  trainingAssignments PersonalTraining[]
+}
+
+model Set {
+  id           String      @id @default(uuid())
+  reps         Int
+  weight       Int
+  rest         Int
+  trainingId   String?
+  training     Training?   @relation(fields: [trainingId], references: [id], onDelete: Cascade)
+  setHistory   SetHistory? @relation(fields: [setHistoryId], references: [id], onDelete: Cascade)
+  setHistoryId String?
+}
+
+model SetHistory {
+  id                 String            @id @default(uuid())
+  date               DateTime
+  personalTrainingId String?
+  personalTraining   PersonalTraining? @relation(fields: [personalTrainingId], references: [id], onDelete: Cascade)
+  traineeTrainingId  String?
+  traineeTraining    TraineeTraining?  @relation(fields: [traineeTrainingId], references: [id], onDelete: Cascade)
+  setType            SetType
+  sets               Set[]
+}
+
+model PersonalTraining {
+  id                String            @id @default(uuid())
+  trainingId        String            @unique
+  training          Training          @relation(fields: [trainingId], references: [id], onDelete: Cascade)
+  programId         String?
+  program           Program?          @relation(fields: [programId], references: [id], onDelete: Cascade)
+  traineeId         String
+  trainee           Trainee           @relation(fields: [traineeId], references: [id], onDelete: Cascade)
+  instructionVideos Video[]           @relation("instructionVideos") //Trainer recorded instructions
+  instructions      String            @default("")
+  traineeTraining   TraineeTraining[]
+  sets              SetHistory[]
+}
+
+model TraineeTraining {
+  id                 String           @id @default(uuid())
+  date               DateTime
+  personalTrainingId String
+  personalTraining   PersonalTraining @relation(fields: [personalTrainingId], references: [id], onDelete: Cascade)
+  sets               SetHistory[]
+  feedbackVideos     Video[]
+}
+
+model Video {
+  id                        String            @id @default(uuid())
+  duration                  Int
+  height                    Int
+  width                     Int
+  playbackUrl               String //Optimize URL from cloudinary to use with SDK
+  url                       String //Original URL from cloudinary
+  assetId                   String //Cloudinary asset ID for cloud storage
+  format                    VideoFormat
+  videoOwner                VideoOwner        @default(TRAINER)
+  trainerInstructionVideo   PersonalTraining? @relation(fields: [trainerInstructionVideoId], references: [id], name: "instructionVideos", onDelete: Cascade) //Trainer recorded instructions
+  trainerInstructionVideoId String?
+  traineeTrainingId         String?
+  traineeTraining           TraineeTraining?  @relation(fields: [traineeTrainingId], references: [id])
+}
