@@ -38,6 +38,26 @@ const get = async (filter: TTraineeFilter): Promise<TTrainee[]> => {
   return trainees;
 };
 
+const getById = async (traineeId: string): Promise<TTrainee> => {
+  const trainee = await prisma.trainee.findUniqueOrThrow({
+    relationLoadStrategy: "join",
+    where: {
+      id: traineeId,
+    },
+    include: {
+      user: {
+        select: {
+          ...USER_TRAINEE_INFO_SELECT,
+        },
+      },
+      metrics: true,
+      programs: true,
+      trainings: true,
+    },
+  });
+
+  return trainee;
+};
 const create = async (dto: TTraineeCreateDto): Promise<string> => {
   const { id } = await prisma.trainee.create({
     data: {
@@ -55,5 +75,6 @@ const create = async (dto: TTraineeCreateDto): Promise<string> => {
 };
 export const traineeService = {
   get,
+  getById,
   create,
 };
