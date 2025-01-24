@@ -59,15 +59,14 @@ export const googleRedirect = async (req: Request, res: Response) => {
 };
 
 export const googleCallback = async (req: Request, res: Response) => {
-  const url = new URL(req?.url);
-  const code = url?.searchParams?.get("code");
+  const { code } = req.query;
 
   if (!code) {
     throw AppError.create("Google authentication failed", 400, true);
   }
   try {
     // Exchange authorization code for access token
-    const accessToken = await authService.getGoogleToken(code);
+    const accessToken = await authService.getGoogleToken(code as string);
 
     // Fetch user information
     const userInfoResponse = await authService.getGoogleUser(accessToken);
@@ -86,7 +85,8 @@ export const googleCallback = async (req: Request, res: Response) => {
       }
     }
 
-    res.status(200).json({ user });
+    const token = await createJWT(user.id!);
+    res.cookie("token", token, COOKIE).redirect(process.env.FRONTEND_URL!);
   } catch (error) {
     const err = AppError.create("Failed to sign in with Google", 500, true);
     res.status(500).json({ message: err.message });
@@ -110,7 +110,7 @@ export const getSessionUser = async (req: Request, res: Response) => {
     const store = asyncLocalStorage.getStore();
     const user = store?.loggedinUser;
 
-    res.status(200).json({ user });
+    res.status(200).json(user || null);
   } catch (error) {
     const err = AppError.create("Failed to get session user", 500, true);
     res.status(500).json({ message: err });

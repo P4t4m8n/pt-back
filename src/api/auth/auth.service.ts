@@ -7,16 +7,16 @@ import { userService } from "../user/user.service";
 
 const signIn = async (userDto: TUserCreateDto): Promise<TUser> => {
   const { email, password, googleId } = userDto;
-
+  
   const user = await prisma.user.findUnique({
     where: { email },
   });
-
+  
   if (!user || !user?.email || !user?.id) {
     throw AppError.create("User not found", 404, true);
   }
-
-  if (user.passwordHash && password) {
+  
+  if (user?.passwordHash && password) {
     const match = await bcrypt.compare(password, user.passwordHash);
     if (!match) {
       throw AppError.create("Invalid credentials", 401, true);
