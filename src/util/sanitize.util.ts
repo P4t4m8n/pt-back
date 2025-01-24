@@ -1,9 +1,14 @@
 import sanitizeHtml from "sanitize-html";
 
-const SanitizedField = (formData: FormData, fieldName: string): string => {
+const SanitizedFormField = (formData: FormData, fieldName: string): string => {
   return sanitizeHtml(formData.get(fieldName)?.toString() || "");
+};
+const SanitizedObjectField = (value?: string|null|number): string | null => {
+  if (!value) return null;
+  return sanitizeHtml(value.toString());
 };
 
 export const sanitizeUtil = {
-  SanitizedField,
+  SanitizedFormField,
+  SanitizedObjectField,
 };

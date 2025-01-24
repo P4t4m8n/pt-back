@@ -9,28 +9,25 @@ export type TTrainee = TEntity & {
   trainings?: TPersonalTraining[];
   trainer?: Omit<TTrainer, "trainee" | "programs">;
   metrics?: TTraineeMetrics[];
-  user?: TUser|null;
+  user?: TUser | null;
 };
 
-export type TTraineeDto = TEntity & {
-  userId: string;
-  trainerId?: string;
-};
+export type TTraineeDto = TEntity & TTraineeCreateDto & {};
 
 export type TTraineeCreateDto = {
-  userDto: TUserCreateDto;
+  userId: string;
   trainerId: string;
-  metricsDto?: TTraineeMetricsDto;
+  metrics?: TTraineeMetricsDto;
 };
 
 export type TTraineeFilter = {
-  firstName?: string;
-  lastName?: string;
-  email?: string;
-  trainerId?: string;
-  phone?: string;
-  skip?: number;
-  take?: number;
+  firstName?: string | null;
+  lastName?: string | null;
+  email?: string | null;
+  trainerId?: string | null;
+  phone?: string | null;
+  skip?: number | null;
+  take?: number | null;
 };
 
 export type TTraineeMetrics = TEntity & {

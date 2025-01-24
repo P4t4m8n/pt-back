@@ -7,15 +7,15 @@ import { userService } from "../user/user.service";
 
 const signIn = async (userDto: TUserCreateDto): Promise<TUser> => {
   const { email, password, googleId } = userDto;
-  
+
   const user = await prisma.user.findUnique({
     where: { email },
   });
-  
+
   if (!user || !user?.email || !user?.id) {
     throw AppError.create("User not found", 404, true);
   }
-  
+
   if (user?.passwordHash && password) {
     const match = await bcrypt.compare(password, user.passwordHash);
     if (!match) {
@@ -80,15 +80,10 @@ const signUp = async (dto: TUserCreateDto): Promise<TUser> => {
 };
 
 const getSessionUser = async (token: string): Promise<TUser | null> => {
-  try {
-    const payload = await authUtil.decodeToken(token);
-    const user = await userService.getById(payload.userId as string);
+  const payload = await authUtil.decodeToken(token);
+  const user = await userService.getById(payload.userId as string);
 
-    return user;
-  } catch (error) {
-    AppError.create(`${error}`, 401, false);
-    return null;
-  }
+  return user;
 };
 
 const getGoogleToken = async (code: string): Promise<string> => {
@@ -110,7 +105,7 @@ const getGoogleToken = async (code: string): Promise<string> => {
   });
 
   if (!tokenResponse.ok) {
-    throw new Error("Failed to fetch access token");
+   throw AppError.create("Failed to fetch google token", 500, true);
   }
 
   const tokenData = await tokenResponse.json();
@@ -131,7 +126,7 @@ const getGoogleUser = async (accessToken: string): Promise<TUserCreateDto> => {
   );
 
   if (!userInfoResponse.ok) {
-    throw new Error("Failed to fetch user information");
+    throw AppError.create("Failed to fetch google user", 500, true);
   }
 
   const userInfo = await userInfoResponse.json();

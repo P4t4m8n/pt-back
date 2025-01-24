@@ -57,4 +57,13 @@ export class AppError extends Error {
   ): AppError {
     return new AppError(message, statusCode, isOperational);
   }
+
+  public static handleResponse(res: any, error: unknown): void {
+    if (error instanceof AppError) {
+      res.status(error.statusCode).json({ message: error.message });
+    } else {
+      const err = AppError.create(`Unexpected Error -> ${error}`, 500, false);
+      res.status(err.statusCode).json({ message: err.message });
+    }
+  }
 }

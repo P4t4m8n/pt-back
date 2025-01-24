@@ -5,15 +5,15 @@ import { validationUtil } from "../../util/validation.util";
 import { jwtVerify } from "jose";
 
 const formDataToUserDTO = (formData: FormData): TUserCreateDto => {
-  const email = sanitizeUtil.SanitizedField(formData, "email");
-  const password = sanitizeUtil.SanitizedField(formData, "password");
-  const firstName = sanitizeUtil.SanitizedField(formData, "firstName");
-  const lastName = sanitizeUtil.SanitizedField(formData, "lastName");
+  const email = sanitizeUtil.SanitizedFormField(formData, "email");
+  const password = sanitizeUtil.SanitizedFormField(formData, "password");
+  const firstName = sanitizeUtil.SanitizedFormField(formData, "firstName");
+  const lastName = sanitizeUtil.SanitizedFormField(formData, "lastName");
   const imgUrl =
-    sanitizeUtil.SanitizedField(formData, "imgUrl") ||
+    sanitizeUtil.SanitizedFormField(formData, "imgUrl") ||
     "/imgs/avatarDefault.svg";
-  const googleId = sanitizeUtil.SanitizedField(formData, "googleId");
-  const phone = sanitizeUtil.SanitizedField(formData, "phone");
+  const googleId = sanitizeUtil.SanitizedFormField(formData, "googleId");
+  const phone = sanitizeUtil.SanitizedFormField(formData, "phone");
 
   const returnedData: TUserCreateDto = {
     email,
@@ -28,7 +28,7 @@ const formDataToUserDTO = (formData: FormData): TUserCreateDto => {
   return returnedData;
 };
 
- const validateUserDto = (userDto: TUserCreateDto | TUserUpdateDto) => {
+const validateUserDto = (userDto: TUserCreateDto | TUserUpdateDto) => {
   const errors: string[] = [];
 
   const emailError = _validateEmail(userDto?.email);
@@ -89,5 +89,5 @@ const _validateEmail = (email?: string): string | null => {
 export const authUtil = {
   formDataToUserDTO,
   validateUserDto,
-  decodeToken
+  decodeToken,
 };

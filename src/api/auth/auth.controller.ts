@@ -20,8 +20,8 @@ export const signInEmail = async (req: Request, res: Response) => {
     const token = await createJWT(user.id!);
     res.cookie("token", token, COOKIE).status(200).json({ user });
   } catch (error) {
-    AppError.create("User not found", 404, true);
-    res.status(404).json({ message: error });
+    AppError.handleResponse(res, error);
+
   }
 };
 
@@ -40,8 +40,8 @@ export const signUpWithEmail = async (req: Request, res: Response) => {
     const token = await createJWT(user.id!);
     res.cookie("token", token, COOKIE).status(200).json({ user });
   } catch (error) {
-    AppError.create("Failed to sign up", 500, true);
-    res.status(500).json({ message: error });
+    AppError.handleResponse(res, error);
+
   }
 };
 
@@ -53,8 +53,8 @@ export const googleRedirect = async (req: Request, res: Response) => {
 
     res.redirect(googleAuthURL);
   } catch (error) {
-    AppError.create("Failed to sign in with Google", 500, true);
-    res.status(500).json({ message: error });
+    AppError.handleResponse(res, error);
+
   }
 };
 
@@ -88,8 +88,8 @@ export const googleCallback = async (req: Request, res: Response) => {
     const token = await createJWT(user.id!);
     res.cookie("token", token, COOKIE).redirect(process.env.FRONTEND_URL!);
   } catch (error) {
-    const err = AppError.create("Failed to sign in with Google", 500, true);
-    res.status(500).json({ message: err.message });
+    AppError.handleResponse(res, error);
+
   }
 };
 
@@ -100,8 +100,8 @@ export const signOut = async (req: Request, res: Response) => {
       .status(200)
       .json({ message: "Signed out" });
   } catch (error) {
-    const err = AppError.create("Failed to sign out", 500, true);
-    res.status(500).json({ message: err.message });
+    AppError.handleResponse(res, error);
+
   }
 };
 
@@ -112,8 +112,8 @@ export const getSessionUser = async (req: Request, res: Response) => {
 
     res.status(200).json(user || null);
   } catch (error) {
-    const err = AppError.create("Failed to get session user", 500, true);
-    res.status(500).json({ message: err });
+    AppError.handleResponse(res, error);
+
   }
 };
 const createJWT = async (
@@ -133,5 +133,5 @@ const COOKIE: CookieOptions = {
   secure: process.env.NODE_ENV === "production",
   sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
   path: "/",
-  maxAge: 24 * 60 * 60, // 24 hours
+  maxAge: 24 * 60 * 60 * 1000, // 24 hours
 };

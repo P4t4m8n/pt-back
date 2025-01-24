@@ -33,11 +33,10 @@ export type TUserCreateDto = {
 };
 
 export type TUserFilter = {
-  email?: string;
-  phone?: string;
-  firstName?: string;
-  lastName?: string;
-  includeTrainers?: boolean;
-  includeTrainees?: boolean;
-
+  email?: string | null;
+  phone?: string | null;
+  firstName?: string | null;
+  lastName?: string | null;
+  includeTrainers?: boolean | null;
+  includeTrainees?: boolean | null;
 };

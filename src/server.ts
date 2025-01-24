@@ -34,8 +34,11 @@ if (process.env.NODE_ENV === "production") {
 import { authRoutes } from "./api/auth/auth.routes";
 app.use("/api/auth", authRoutes);
 
-// import { traineeRoutes } from "./api/trainee/trainee.routes";
-// app.use("/api/trainee", traineeRoutes);
+import { traineeRoutes } from "./api/trainee/trainee.routes";
+app.use("/api/trainee", traineeRoutes);
+
+import { userRoutes } from "./api/user/user.routes";
+app.use("/api/user", userRoutes);
 
 // import { programRoutes } from "./api/program/program.routes";
 // app.use("/api/program", programRoutes);
@@ -45,9 +48,6 @@ app.use("/api/auth", authRoutes);
 
 // import { personalTrainingRoutes } from "./api/personal-training/personal-training.routes";
 // app.use("/api/personal-training", personalTrainingRoutes);
-
-// import { userRoutes } from "./api/user/user.routes";
-// app.use("/api/user", userRoutes);
 
 // import { exerciseRoutes } from "./api/exercise/exercise.routes";
 // app.use("/api/exercise", exerciseRoutes);
