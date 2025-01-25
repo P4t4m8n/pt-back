@@ -1,10 +1,10 @@
 import express, { Request, Response } from "express";
-import { setupAsyncLocalStorage } from "../middlewares/localStorage.middleware";
 import cookieParser from "cookie-parser";
 import http from "http";
 import cors from "cors";
 import path from "path";
 import dotenv from "dotenv";
+import { setupAsyncLocalStorage } from "./middlewares/localStorage.middleware";
 
 dotenv.config();
 
@@ -40,11 +40,11 @@ app.use("/api/trainee", traineeRoutes);
 import { userRoutes } from "./api/user/user.routes";
 app.use("/api/user", userRoutes);
 
+import { trainingRoutes } from "./api/training/training.routes";
+app.use("/api/training", trainingRoutes);
+
 // import { programRoutes } from "./api/program/program.routes";
 // app.use("/api/program", programRoutes);
-
-// import { trainingRoutes } from "./api/training/training.routes";
-// app.use("/api/training", trainingRoutes);
 
 // import { personalTrainingRoutes } from "./api/personal-training/personal-training.routes";
 // app.use("/api/personal-training", personalTrainingRoutes);

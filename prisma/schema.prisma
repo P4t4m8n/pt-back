@@ -86,11 +86,12 @@ model TraineeMetrics {
 }
 
 model Trainer {
-  id       String    @id @default(uuid())
-  userId   String    @unique
-  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id       String     @id @default(uuid())
+  userId   String     @unique
+  user     User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   trainees Trainee[]
   programs Program[]
+  training Training[]
 }
 
 model Program {
@@ -113,6 +114,8 @@ model Training {
   description         String             @default("")
   defaultSets         Set[]
   trainingAssignments PersonalTraining[]
+  trainerId           String?
+  trainer             Trainer?           @relation(fields: [trainerId], references: [id], onDelete: Cascade)
 }
 
 model Set {

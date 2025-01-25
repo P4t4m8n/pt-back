@@ -3,7 +3,7 @@ import { SignJWT } from "jose";
 import { AppError } from "../../util/Error.util";
 import { authUtil } from "./auth.util";
 import { authService } from "./auth.service";
-import { asyncLocalStorage } from "../../../middlewares/localStorage.middleware";
+import { asyncLocalStorage } from "../../middlewares/localStorage.middleware";
 
 export const signInEmail = async (req: Request, res: Response) => {
   try {
@@ -21,7 +21,6 @@ export const signInEmail = async (req: Request, res: Response) => {
     res.cookie("token", token, COOKIE).status(200).json({ user });
   } catch (error) {
     AppError.handleResponse(res, error);
-
   }
 };
 
@@ -41,7 +40,6 @@ export const signUpWithEmail = async (req: Request, res: Response) => {
     res.cookie("token", token, COOKIE).status(200).json({ user });
   } catch (error) {
     AppError.handleResponse(res, error);
-
   }
 };
 
@@ -54,7 +52,6 @@ export const googleRedirect = async (req: Request, res: Response) => {
     res.redirect(googleAuthURL);
   } catch (error) {
     AppError.handleResponse(res, error);
-
   }
 };
 
@@ -89,7 +86,6 @@ export const googleCallback = async (req: Request, res: Response) => {
     res.cookie("token", token, COOKIE).redirect(process.env.FRONTEND_URL!);
   } catch (error) {
     AppError.handleResponse(res, error);
-
   }
 };
 
@@ -101,7 +97,6 @@ export const signOut = async (req: Request, res: Response) => {
       .json({ message: "Signed out" });
   } catch (error) {
     AppError.handleResponse(res, error);
-
   }
 };
 
@@ -109,11 +104,11 @@ export const getSessionUser = async (req: Request, res: Response) => {
   try {
     const store = asyncLocalStorage.getStore();
     const user = store?.loggedinUser;
+    console.log("user:", user);
 
     res.status(200).json(user || null);
   } catch (error) {
     AppError.handleResponse(res, error);
-
   }
 };
 const createJWT = async (

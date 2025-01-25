@@ -1,9 +1,21 @@
+import { Response } from "express";
 import Logger from "./Logger.util";
 
+/**
+ * Custom error class for application-specific errors.
+ * Extends the built-in `Error` class to include additional properties.
+ */
 export class AppError extends Error {
   public readonly statusCode: number;
   public readonly isOperational: boolean;
 
+  /**
+   * Creates an instance of `AppError`.
+   *
+   * @param message - The error message.
+   * @param statusCode - HTTP status code (default is 500).
+   * @param isOperational - Flag indicating if the error is operational (default is true).
+   */
   constructor(
     message: string,
     statusCode: number = 500,
@@ -29,6 +41,8 @@ export class AppError extends Error {
 
   /**
    * Logs the error using the Logger class.
+   *
+   * @private
    */
   private logError(): void {
     if (this.isOperational) {
@@ -45,10 +59,12 @@ export class AppError extends Error {
   }
 
   /**
-   * A static helper method for creating an AppError instance.
-   * @param message - The error message
-   * @param statusCode - HTTP status code
-   * @param isOperational - Operational flag
+   * A static helper method for creating an `AppError` instance.
+   *
+   * @param message - The error message.
+   * @param statusCode - HTTP status code (default is 500).
+   * @param isOperational - Operational flag (default is true).
+   * @returns A new instance of `AppError`.
    */
   public static create(
     message: string,
@@ -58,7 +74,15 @@ export class AppError extends Error {
     return new AppError(message, statusCode, isOperational);
   }
 
-  public static handleResponse(res: any, error: unknown): void {
+  /**
+   * Handles the response by sending an appropriate error message and status code.
+   *
+   * @param res - The response object to send the error message.
+   * @param error - The error object to handle. If it is an instance of `AppError`,
+   *                it sends the error's status code and message. Otherwise, it creates
+   *                a new `AppError` with a 500 status code and sends its message.
+   */
+  public static handleResponse(res: Response, error: unknown): void {
     if (error instanceof AppError) {
       res.status(error.statusCode).json({ message: error.message });
     } else {
@@ -67,3 +91,4 @@ export class AppError extends Error {
     }
   }
 }
+

@@ -1,7 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import { AsyncLocalStorage } from "async_hooks";
-import { TUser } from "../src/types/user.type";
-import { authService } from "../src/api/auth/auth.service";
+import { TUser } from "../types/user.type";
+import { authService } from "../api/auth/auth.service";
+
 
 export interface AsyncStorageData {
   loggedinUser?: TUser;

@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { AppError } from "../../util/Error.util";
 import { traineeUtil } from "./trainee.util";
 import { traineeService } from "./trainee.service";
-import { asyncLocalStorage } from "../../../middlewares/localStorage.middleware";
+import { asyncLocalStorage } from "../../middlewares/localStorage.middleware";
 
 export const getTrainees = async (req: Request, res: Response) => {
   try {
