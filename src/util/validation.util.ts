@@ -24,7 +24,7 @@ const validateExistence = (
   filedName: string,
   value: unknown
 ): string | null => {
-  if (!value) {
+  if (value === null || value === undefined) {
     return `${filedName} is required.`;
   }
   return null;
@@ -32,9 +32,9 @@ const validateExistence = (
 
 const validateLettersAndNumbers = (
   filedName: string,
-  value?: string
+  value?: string|null
 ): string | null => {
-  if (!value) {
+  if (value === null || value === undefined) {
     return `${filedName} is required.`;
   }
   if (!/^[a-zA-Z0-9]+$/.test(value)) {
@@ -44,7 +44,7 @@ const validateLettersAndNumbers = (
 };
 
 const validateLetters = (filedName: string, value?: string): string | null => {
-  if (!value) {
+  if (value === null || value === undefined) {
     return `${filedName} is required.`;
   }
   if (!/^[a-zA-Z]+$/.test(value)) {
@@ -57,7 +57,7 @@ const validateNumbers = (
   filedName: string,
   value?: string | number | null
 ): string | null => {
-  if (!value) {
+  if (value === null || value === undefined) {
     return `${filedName} is required.`;
   }
   if (!/^[0-9]+$/.test(value.toString())) {
@@ -67,7 +67,7 @@ const validateNumbers = (
 };
 
 const validateDate = (filedName: string, value?: Date): string | null => {
-  if (!value) {
+  if (value === null || value === undefined) {
     return `${filedName} is required.`;
   }
   if (isNaN(value.getTime())) {
@@ -77,7 +77,7 @@ const validateDate = (filedName: string, value?: Date): string | null => {
 };
 
 const validateDateStr = (filedName: string, value?: string): string | null => {
-  if (!value) {
+  if (value === null || value === undefined) {
     return `${filedName} is required.`;
   }
   if (isNaN(Date.parse(value))) {

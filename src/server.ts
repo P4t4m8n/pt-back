@@ -43,6 +43,9 @@ app.use("/api/user", userRoutes);
 import { trainingRoutes } from "./api/training/training.routes";
 app.use("/api/training", trainingRoutes);
 
+import { metricRoutes } from "./api/metrics/metrics.routes";
+app.use("/api/metrics", metricRoutes)
+
 // import { programRoutes } from "./api/program/program.routes";
 // app.use("/api/program", programRoutes);
 

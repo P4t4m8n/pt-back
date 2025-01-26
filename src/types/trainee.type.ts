@@ -41,7 +41,7 @@ export type TTraineeMetrics = TEntity & {
 };
 
 export type TTraineeMetricsDto = TTraineeMetrics & {
-  traineeId?: string;
+  traineeId: string|null;
 };
 
 export type TTraineeMetricsFilter = {

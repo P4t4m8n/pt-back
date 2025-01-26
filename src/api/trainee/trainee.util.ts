@@ -1,6 +1,7 @@
 import { TTraineeDto, TTraineeFilter } from "../../types/trainee.type";
 import { sanitizeUtil } from "../../util/sanitize.util";
 import { validationUtil } from "../../util/validation.util";
+import { metricsUtil } from "../metrics/metrics.util";
 
 const sanitizeFilter = (filter: Partial<TTraineeFilter>): TTraineeFilter => {
   return {
@@ -23,21 +24,10 @@ const sanitizeDto = (dto: TTraineeDto): TTraineeDto => {
   };
 
   if (metrics) {
-    const _metricsDto = {
-      heartRate: +(sanitizeUtil.SanitizedObjectField(metrics?.heartRate) || 0),
-      weight: +(sanitizeUtil.SanitizedObjectField(metrics.weight) || 0),
-      height: +(sanitizeUtil.SanitizedObjectField(metrics.height) || 0),
-      age: +(sanitizeUtil.SanitizedObjectField(metrics.age) || 0),
-      bloodPressureSystole: +(
-        sanitizeUtil.SanitizedObjectField(metrics.bloodPressureSystole) || 0
-      ),
-      bloodPressureDiastole: +(
-        sanitizeUtil.SanitizedObjectField(metrics.bloodPressureDiastole) || 0
-      ),
-      date: metrics.date ? new Date(metrics.date) : new Date(),
-    };
+    const _metricsDto = metricsUtil.sanitizeDto(metrics);
     _sanitizedDto.metrics = _metricsDto;
   }
+  
   return _sanitizedDto;
 };
 
