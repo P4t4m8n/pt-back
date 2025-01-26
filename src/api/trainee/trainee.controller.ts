@@ -22,7 +22,6 @@ export const getTraineeById = async (req: Request, res: Response) => {
     const { id } = req.params;
 
     const trainee = await traineeService.getById(id);
-    console.log("trainee:", trainee)
     res.status(200).json(trainee);
   } catch (error) {
     AppError.handleResponse(res, error);
@@ -36,7 +35,6 @@ export const createTrainee = async (req: Request, res: Response) => {
 
     const data = req.body;
     const dto = traineeUtil.sanitizeDto(data);
-    console.log("dto:", dto);
 
     const store = asyncLocalStorage.getStore();
     const loggedInUser = store?.loggedinUser;
@@ -53,7 +51,6 @@ export const createTrainee = async (req: Request, res: Response) => {
     }
 
     const id = await traineeService.create(dto);
-    console.log("id:", id);
     res.status(201).json({ id });
   } catch (error) {
     AppError.handleResponse(res, error);

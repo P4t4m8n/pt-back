@@ -104,7 +104,6 @@ export const getSessionUser = async (req: Request, res: Response) => {
   try {
     const store = asyncLocalStorage.getStore();
     const user = store?.loggedinUser;
-    console.log("user:", user);
 
     res.status(200).json(user || null);
   } catch (error) {
