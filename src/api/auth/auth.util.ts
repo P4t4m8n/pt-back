@@ -64,7 +64,8 @@ const validateUserDto = (userDto: TUserCreateDto | TUserUpdateDto) => {
   return errors;
 };
 
-const decodeToken = async (token: string) => {
+const decodeToken = async (token?: string) => {
+  if (!token) return null;
   const secret = new TextEncoder().encode(process.env.JWT_SECRET);
   const { payload } = await jwtVerify(token, secret);
 

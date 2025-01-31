@@ -50,7 +50,12 @@ const getById = async (traineeId: string): Promise<TTrainee> => {
           ...USER_TRAINEE_INFO_SELECT,
         },
       },
-      metrics: true,
+      metrics: {
+        orderBy: {
+          date: "desc",
+        },
+        take: 3,
+      },
       programs: true,
       trainings: true,
     },

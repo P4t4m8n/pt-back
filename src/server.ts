@@ -44,10 +44,13 @@ import { trainingRoutes } from "./api/training/training.routes";
 app.use("/api/training", trainingRoutes);
 
 import { metricRoutes } from "./api/metrics/metrics.routes";
-app.use("/api/metrics", metricRoutes)
+app.use("/api/metrics", metricRoutes);
 
-// import { programRoutes } from "./api/program/program.routes";
-// app.use("/api/program", programRoutes);
+import { programRoutes } from "./api/program/program.routes";
+app.use("/api/program", programRoutes);
+
+import { videoRoutes } from "./api/video/video.routes";
+app.use("/api/video", videoRoutes);
 
 // import { personalTrainingRoutes } from "./api/personal-training/personal-training.routes";
 // app.use("/api/personal-training", personalTrainingRoutes);
@@ -58,12 +61,9 @@ app.use("/api/metrics", metricRoutes)
 // import { setsRoutes } from "./api/set/set.routes";
 // app.use("/api/sets", setsRoutes);
 
-// import { videoRoutes } from "./api/video/video.routes";
-// app.use("/api/video", videoRoutes);
-
 // Catch-all route
 app.get("/**", (req: Request, res: Response) => {
-  res.sendFile(path.resolve("/public/index.html"));
+  res.sendFile(path.resolve("public/index.html"));
 });
 const port = process.env.PORT || 3030;
 

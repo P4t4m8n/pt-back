@@ -32,7 +32,7 @@ const validateExistence = (
 
 const validateLettersAndNumbers = (
   filedName: string,
-  value?: string|null
+  value?: string | null
 ): string | null => {
   if (value === null || value === undefined) {
     return `${filedName} is required.`;
@@ -43,7 +43,10 @@ const validateLettersAndNumbers = (
   return null;
 };
 
-const validateLetters = (filedName: string, value?: string): string | null => {
+const validateLetters = (
+  filedName: string,
+  value?: string | null | undefined
+): string | null => {
   if (value === null || value === undefined) {
     return `${filedName} is required.`;
   }
@@ -66,13 +69,24 @@ const validateNumbers = (
   return null;
 };
 
-const validateDate = (filedName: string, value?: Date): string | null => {
+const validateDate = (
+  filedName: string,
+  value?: Date | null | string
+): string | null => {
+  if (value instanceof Date) {
+    return null;
+  }
+
   if (value === null || value === undefined) {
     return `${filedName} is required.`;
   }
-  if (isNaN(value.getTime())) {
+
+  const _value = typeof value === "string" ? new Date(value) : value;
+
+  if (isNaN(_value?.getTime())) {
     return `${filedName} is invalid.`;
   }
+  
   return null;
 };
 

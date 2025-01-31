@@ -6,8 +6,7 @@ const save = async (dto: TTraineeMetricsDto): Promise<TTraineeMetrics> => {
   const { traineeId } = dto;
   
   if (!traineeId) throw AppError.create("Trainee ID is required", 400);
-  console.log("traineeId:", traineeId)
-  console.log("dto:", dto)
+
 
   const metric = await prisma.traineeMetrics.upsert({
     where: { id: dto?.id || "" },

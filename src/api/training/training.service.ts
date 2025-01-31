@@ -37,6 +37,7 @@ const get = async (filter: TTrainingFilter): Promise<TTraining[]> => {
       id: true,
       name: true,
       description: true,
+      defaultSets: true,
     },
   });
 

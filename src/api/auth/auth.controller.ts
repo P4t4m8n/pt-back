@@ -122,7 +122,7 @@ const createJWT = async (
     .sign(secret);
 };
 
-const COOKIE: CookieOptions = {
+export const COOKIE: CookieOptions = {
   httpOnly: true,
   secure: process.env.NODE_ENV === "production",
   sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",

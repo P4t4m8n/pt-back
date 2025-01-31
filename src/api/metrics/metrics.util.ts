@@ -34,7 +34,6 @@ const sanitizeDto = (dto: TTraineeMetricsDto): TTraineeMetricsDto => {
 const validateDto = (
   dto: TTraineeMetricsDto
 ): Map<keyof TTraineeMetricsDto, string> => {
-  console.log("dto:", dto)
   const errorsMap = new Map<keyof TTraineeMetricsDto, string>();
 
   const {
@@ -52,7 +51,6 @@ const validateDto = (
     "Heart Rate",
     heartRate
   );
-  console.log("heartRateError:", heartRateError)
 
   if (heartRateError) {
     errorsMap.set("heartRate", heartRateError);

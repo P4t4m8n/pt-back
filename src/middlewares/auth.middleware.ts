@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { asyncLocalStorage } from "./localStorage.middleware";
 import Logger from "../util/Logger.util";
-
+import { AppError } from "../util/Error.util";
 
 export async function requireAuth(
   req: Request,
@@ -10,8 +10,7 @@ export async function requireAuth(
 ): Promise<void> {
   const store = asyncLocalStorage.getStore();
   if (!store?.loggedinUser) {
-    res.status(401).send("Not Authenticated");
-    return;
+    throw AppError.create("Not Authenticated", 401);
   }
 
   next();
@@ -26,14 +25,11 @@ export async function requireAdmin(
   const loggedinUser = store?.loggedinUser;
 
   if (!loggedinUser) {
-    res.status(401).send("Not Authenticated");
-    return;
+    throw AppError.create("Not Authenticated", 401);
   }
 
-  if (!loggedinUser.trainer) {
-    Logger.warn(`${loggedinUser.id} attempted to perform admin action`);
-    res.status(403).send("Not Authorized");
-    return;
+  if (!loggedinUser?.trainer) {
+    throw AppError.create("Not Authorized", 403);
   }
 
   next();

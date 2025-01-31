@@ -31,7 +31,7 @@ enum VideoOwner {
 }
 
 enum VideoFormat {
-  MP4
+  MP4  
   MOV
   AVI
   FLV
@@ -165,14 +165,13 @@ model TraineeTraining {
 
 model Video {
   id                        String            @id @default(uuid())
-  duration                  Int
-  height                    Int
-  width                     Int
-  playbackUrl               String //Optimize URL from cloudinary to use with SDK
+  duration                  Int               @default(0)
+  height                    Int               @default(0)
+  width                     Int               @default(0)
+  playbackUrl               String? //Optimize URL from cloudinary to use with SDK
   url                       String //Original URL from cloudinary
   assetId                   String //Cloudinary asset ID for cloud storage
   format                    VideoFormat
-  videoOwner                VideoOwner        @default(TRAINER)
   trainerInstructionVideo   PersonalTraining? @relation(fields: [trainerInstructionVideoId], references: [id], name: "instructionVideos", onDelete: Cascade) //Trainer recorded instructions
   trainerInstructionVideoId String?
   traineeTrainingId         String?

@@ -17,7 +17,6 @@ export const saveMetrics = async (req: Request, res: Response) => {
     }
 
     const metrics = await metricsService.save(metricsDto);
-    console.log("metrics:", metrics)
     res.status(201).json(metrics);
   } catch (error) {
     AppError.handleResponse(res, error);

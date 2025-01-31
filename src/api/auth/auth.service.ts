@@ -81,6 +81,7 @@ const signUp = async (dto: TUserCreateDto): Promise<TUser> => {
 
 const getSessionUser = async (token: string): Promise<TUser | null> => {
   const payload = await authUtil.decodeToken(token);
+  if (!payload) return null;
   const user = await userService.getById(payload.userId as string);
 
   return user;
@@ -105,7 +106,7 @@ const getGoogleToken = async (code: string): Promise<string> => {
   });
 
   if (!tokenResponse.ok) {
-   throw AppError.create("Failed to fetch google token", 500, true);
+    throw AppError.create("Failed to fetch google token", 500, true);
   }
 
   const tokenData = await tokenResponse.json();
