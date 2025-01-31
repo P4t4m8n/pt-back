@@ -52,8 +52,8 @@ app.use("/api/program", programRoutes);
 import { videoRoutes } from "./api/video/video.routes";
 app.use("/api/video", videoRoutes);
 
-// import { personalTrainingRoutes } from "./api/personal-training/personal-training.routes";
-// app.use("/api/personal-training", personalTrainingRoutes);
+import { personalTrainingRoutes } from "./api/personal-training/personal-training.routes";
+app.use("/api/personal-training", personalTrainingRoutes);
 
 // import { exerciseRoutes } from "./api/exercise/exercise.routes";
 // app.use("/api/exercise", exerciseRoutes);
