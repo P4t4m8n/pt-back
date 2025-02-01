@@ -31,7 +31,7 @@ export const getTraineeById = async (req: Request, res: Response) => {
 export const createTrainee = async (req: Request, res: Response) => {
   try {
     //TODO build a master trainer and move credentials into env. this ID is temporary
-    const masterTrainer = "f12614e1-98c9-4e54-97e0-0d58c331b450";
+    // const masterTrainer = "f12614e1-98c9-4e54-97e0-0d58c331b450";
 
     const data = req.body;
     const dto = traineeUtil.sanitizeDto(data);

@@ -1,4 +1,4 @@
-import { VideoFormat, VideoOwner } from "@prisma/client";
+import { VideoFormat } from "@prisma/client";
 import { TEntity } from "./app.type";
 
 export type TVideo = TEntity & {

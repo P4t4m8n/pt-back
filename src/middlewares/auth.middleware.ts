@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from "express";
 import { asyncLocalStorage } from "./localStorage.middleware";
-import Logger from "../util/Logger.util";
 import { AppError } from "../util/Error.util";
 
 export async function requireAuth(

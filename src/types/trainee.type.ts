@@ -2,7 +2,7 @@ import { TEntity } from "./app.type";
 import { TPersonalTraining } from "./personal-training.type";
 import { TProgram } from "./program.type";
 import { TTrainer } from "./trainer.type";
-import { TUser, TUserCreateDto } from "./user.type";
+import { TUser } from "./user.type";
 
 export type TTrainee = TEntity & {
   programs?: TProgram[];

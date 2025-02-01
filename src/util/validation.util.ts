@@ -34,10 +34,9 @@ const validateLettersAndNumbers = (
   filedName: string,
   value?: string | null
 ): string | null => {
-  if (value === null || value === undefined) {
-    return `${filedName} is required.`;
-  }
-  if (!/^[a-zA-Z0-9]+$/.test(value)) {
+  if (value === null || value === undefined ||!value) return null;
+
+  if (!/^[a-zA-Z0-9]+$/.test(value || "")) {
     return `${filedName} contain only letters and numbers.`;
   }
   return null;
@@ -60,10 +59,8 @@ const validateNumbers = (
   filedName: string,
   value?: string | number | null
 ): string | null => {
-  if (value === null || value === undefined) {
-    return `${filedName} is required.`;
-  }
-  if (!/^[0-9]+$/.test(value.toString())) {
+  if (value === null || value === undefined) return null;
+  if (!/^[0-9]+$/.test(value?.toString() || "")) {
     return `${filedName} contain only numbers.`;
   }
   return null;
@@ -86,7 +83,7 @@ const validateDate = (
   if (isNaN(_value?.getTime())) {
     return `${filedName} is invalid.`;
   }
-  
+
   return null;
 };
 

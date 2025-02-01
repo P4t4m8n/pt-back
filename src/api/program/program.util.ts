@@ -3,7 +3,7 @@ import { TProgramDto, TProgramFilter } from "../../types/program.type";
 import { sanitizeUtil } from "../../util/sanitize.util";
 import { validationUtil } from "../../util/validation.util";
 
-const sanitizeFilter = (filter: Partial<TProgramFilter>): TProgramFilter => {
+const sanitizeFilter = (): TProgramFilter => {
   return {};
 };
 

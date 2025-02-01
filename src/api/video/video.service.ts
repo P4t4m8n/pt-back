@@ -1,4 +1,4 @@
-import { VideoFormat, VideoOwner } from "@prisma/client";
+import { VideoFormat } from "@prisma/client";
 import { prisma } from "../../../prisma/prisma";
 import { TVideo, TVideoDto } from "../../types/video.type";
 import { AppError } from "../../util/Error.util";

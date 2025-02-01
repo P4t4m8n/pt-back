@@ -15,6 +15,7 @@ const save = async (dto: TProgramDto): Promise<TProgram> => {
       endDate: endDate!,
       traineeId: traineeId!,
       trainerId: trainerId!,
+      days: days!,
     },
     create: {
       ...dto,
@@ -24,6 +25,7 @@ const save = async (dto: TProgramDto): Promise<TProgram> => {
       traineeId: traineeId!,
       trainerId: trainerId!,
       isActive: isActive!,
+      days: days!,
     },
   });
 

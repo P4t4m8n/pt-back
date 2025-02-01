@@ -3,7 +3,6 @@ import { AsyncLocalStorage } from "async_hooks";
 import { TUser } from "../types/user.type";
 import { authService } from "../api/auth/auth.service";
 import { AppError } from "../util/Error.util";
-import { COOKIE } from "../api/auth/auth.controller";
 
 export interface AsyncStorageData {
   loggedinUser?: TUser;
@@ -29,16 +28,19 @@ export async function setupAsyncLocalStorage(
     }
     try {
       const loggedinUser = await authService.getSessionUser(token);
-      if (loggedinUser) {
-        const alsStore = asyncLocalStorage.getStore();
-        if (alsStore) {
-          alsStore.loggedinUser = loggedinUser as TUser;
-        }
+      if (!loggedinUser) {
+        throw AppError.create("Not Authenticated", 401);
       }
+      const alsStore = asyncLocalStorage.getStore();
+      if (!alsStore) {
+        throw AppError.create("Not Authenticated", 401);
+      }
+      alsStore.loggedinUser = loggedinUser as TUser;
     } catch (error) {
-      AppError.create("Not Authenticated", 401);
+      if (!(error instanceof AppError)) {
+        AppError.create(`${error}`, 500, false);
+      }
       res.clearCookie("token");
-      next();
     } finally {
       next();
     }

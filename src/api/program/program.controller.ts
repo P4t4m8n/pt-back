@@ -3,7 +3,6 @@ import { Request, Response } from "express";
 import { AppError } from "../../util/Error.util";
 import { programUtil } from "./program.util";
 import { programService } from "./program.service";
-import { appendFile } from "fs";
 
 export const saveProgram = async (
   req: Request,
@@ -15,6 +14,7 @@ export const saveProgram = async (
     const dto = programUtil.sanitizeDto(data);
     const errors = programUtil.validateDto(dto);
     if (Object.keys(errors).length) {
+      //TODO add validation errors to error class to return a json instead of massage
       AppError.create(`Invalid data-> ${JSON.stringify(errors)} `, 403);
       res.status(403).json({ ...errors });
       return;

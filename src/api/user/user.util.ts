@@ -1,4 +1,3 @@
-import { TTraineeFilter } from "../../types/trainee.type";
 import { TUserFilter } from "../../types/user.type";
 import { sanitizeUtil } from "../../util/sanitize.util";
 

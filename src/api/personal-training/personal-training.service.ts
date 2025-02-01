@@ -41,27 +41,33 @@ import {
 const create = async (
   dto: TPersonalTrainingDto
 ): Promise<TPersonalTraining> => {
-  console.log("dto:", dto)
-  const { traineeId, trainingId, sets, instructionVideos } = dto;
+  console.log("dto:", dto);
+  const { traineeId, trainingId, setsHistory, instructionVideos } = dto;
 
   const pt = await prisma.personalTraining.create({
     data: {
       traineeId,
       trainingId,
       instructionVideos: {
-        createMany: {
-          data: instructionVideos,
-        },
+        connect: instructionVideos.map((video) => ({ id: video.id })),
       },
-      sets: {
-        createMany: {
-          data: sets,
-        },
+      setsHistory: {
+        create: setsHistory.map((history) => ({
+          date: history.date,
+          setType: history.setType,
+          sets: {
+            create: history.sets.map((set) => ({
+              reps: set.reps,
+              weight: set.weight,
+              rest: set.rest,
+            })),
+          },
+        })),
       },
     },
     include: {
       instructionVideos: true,
-      sets: {
+      setsHistory: {
         include: {
           sets: true,
         },

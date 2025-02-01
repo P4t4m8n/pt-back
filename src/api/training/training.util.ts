@@ -1,6 +1,22 @@
-import { TTrainingFilter } from "../../types/training.type";
+import { TTrainingDto, TTrainingFilter } from "../../types/training.type";
 import { sanitizeUtil } from "../../util/sanitize.util";
+import { setsUtil } from "../sets/sets.util";
 
+const sanitizeDto = (dto: TTrainingDto): TTrainingDto => {
+  const name = sanitizeUtil.SanitizedObjectField(dto?.name) || "";
+  const description = sanitizeUtil.SanitizedObjectField(dto?.description) || "";
+
+  const defaultSets = dto.defaultSets?.map((set) => setsUtil.sanitizeDto(set));
+
+  const trainerId = sanitizeUtil.SanitizedObjectField(dto?.trainerId) || "";
+
+  return {
+    name,
+    description,
+    defaultSets,
+    trainerId,
+  };
+};
 const sanitizeFilter = (filter: Partial<TTrainingFilter>): TTrainingFilter => {
   return {
     trainerId: sanitizeUtil.SanitizedObjectField(filter?.trainerId),
@@ -10,4 +26,5 @@ const sanitizeFilter = (filter: Partial<TTrainingFilter>): TTrainingFilter => {
 
 export const trainingUtil = {
   sanitizeFilter,
+  sanitizeDto,
 };

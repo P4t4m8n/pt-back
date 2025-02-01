@@ -31,7 +31,7 @@ enum VideoOwner {
 }
 
 enum VideoFormat {
-  MP4  
+  MP4
   MOV
   AVI
   FLV
@@ -151,7 +151,7 @@ model PersonalTraining {
   instructionVideos Video[]           @relation("instructionVideos") //Trainer recorded instructions
   instructions      String            @default("")
   traineeTraining   TraineeTraining[]
-  sets              SetHistory[]
+  setsHistory       SetHistory[]
 }
 
 model TraineeTraining {
@@ -159,7 +159,7 @@ model TraineeTraining {
   date               DateTime
   personalTrainingId String
   personalTraining   PersonalTraining @relation(fields: [personalTrainingId], references: [id], onDelete: Cascade)
-  sets               SetHistory[]
+  setsHistory        SetHistory[]
   feedbackVideos     Video[]
 }
 

@@ -4,7 +4,6 @@ import { videoService } from "./video.service";
 
 export const saveVideo = async (req: Request, res: Response) => {
   try {
-    const z = req.body;
     const { file } = req;
 
     if (!file) {

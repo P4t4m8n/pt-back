@@ -8,7 +8,7 @@ export type TPersonalTraining = TEntity & {
   training?: Omit<TTraining, "defaultSets">;
   instructionVideos?: TVideo[];
   instructions?: string;
-  sets?: TSetHistory[]|null;
+  setsHistory?: TSetHistory[]|null;
   traineeTraining?: TTraineeTraining[];
 };
 
@@ -21,7 +21,7 @@ export type TPersonalTrainingDto = TEntity &
     programId?: string;
     traineeId: string;
     instructionVideos: TVideoDto[];
-    sets: TSetHistoryDto[];
+    setsHistory: TSetHistoryDto[];
   };
 
 export type TPersonalTrainingFilter = {

@@ -26,8 +26,7 @@ export type TSetHistoryDto = Omit<
   "personalTraining" | "traineeTraining"
 > & {
   date: Date;
-  personalTraining?: TPersonalTraining;
-  traineeTraining?: TTraineeTraining;
+
 };
 
 export type TSetFilter = {
