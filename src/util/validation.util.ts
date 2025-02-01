@@ -34,10 +34,10 @@ const validateLettersAndNumbers = (
   filedName: string,
   value?: string | null
 ): string | null => {
-  if (value === null || value === undefined ||!value) return null;
+  if (value === null || value === undefined || !value) return null;
 
-  if (!/^[a-zA-Z0-9]+$/.test(value || "")) {
-    return `${filedName} contain only letters and numbers.`;
+  if (!/^[a-zA-Z0-9 ]+$/.test(value || "")) {
+    return `${filedName} can only contain letters, numbers, and spaces.`;
   }
   return null;
 };

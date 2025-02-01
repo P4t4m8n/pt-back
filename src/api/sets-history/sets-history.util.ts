@@ -6,7 +6,7 @@ import { setsUtil } from "../sets/sets.util";
 const sanitizeDto = (dto: TSetHistoryDto): TSetHistoryDto => {
   const setType = sanitizeUtil.SanitizedObjectField(dto?.setType) || "";
   const date = sanitizeUtil.SanitizedObjectField(dto?.date?.toString()||"");
-  const sets = dto.sets.map((set) => setsUtil.sanitizeDto(set));
+  const sets = dto.sets?.map((set) => setsUtil.sanitizeDto(set));
 
   const id = sanitizeUtil.SanitizedObjectField(dto?.id) || "";
 

@@ -8,7 +8,6 @@ export const createPersonalTraining = async (req: Request, res: Response) => {
     const data = req.body;
     //TODO add validation and sanitization
     const dto = personalTrainingUtil.sanitizeDto(data);
-    console.log("dto:", dto)
     const errors = personalTrainingUtil.validateDto(dto);
     if (Object.keys(errors).length) {
       //TODO add validation errors to error class to return a json instead of massage

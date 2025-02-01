@@ -19,7 +19,7 @@ export type TSetHistory = TEntity & {
   personalTraining?: TPersonalTraining;
   traineeTraining?: TTraineeTraining;
   setType: SetType;
-  sets: TSet[];
+  sets?: TSet[]|null;
 };
 export type TSetHistoryDto = Omit<
   TSetHistory,

@@ -1,5 +1,6 @@
 import { prisma } from "../../../prisma/prisma";
 import { TUser, TUserFilter } from "../../types/user.type";
+import { AppError } from "../../util/Error.util";
 import { USER_TRAINEE_INFO_SELECT } from "./user.select";
 
 const getById = async (id: string): Promise<TUser> => {
@@ -16,6 +17,30 @@ const getById = async (id: string): Promise<TUser> => {
       trainee: true,
     },
   });
+
+  return user;
+};
+
+const getByTraineeId = async (traineeId: string): Promise<TUser> => {
+  const user = await prisma.user.findFirst({
+    where: {
+      trainee: {
+        id: traineeId,
+      },
+    },
+    select: {
+      id: true,
+      firstName: true,
+      lastName: true,
+      email: true,
+      phone: true,
+      imgUrl: true,
+    },
+  });
+
+  if (!user) {
+    throw AppError.create("User not found", 404);
+  }
 
   return user;
 };
@@ -65,4 +90,5 @@ const get = async (filter: TUserFilter): Promise<TUser[]> => {
 export const userService = {
   getById,
   get,
+  getByTraineeId
 };

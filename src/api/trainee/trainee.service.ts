@@ -57,7 +57,17 @@ const getById = async (traineeId: string): Promise<TTrainee> => {
         take: 3,
       },
       programs: true,
-      trainings: true,
+      trainings: {
+        include: {
+          setsHistory: true,
+          instructionVideos: true,
+          training: {
+            select: {
+              name: true,
+            },
+          },
+        },
+      },
     },
   });
 

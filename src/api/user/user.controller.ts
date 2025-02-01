@@ -15,3 +15,15 @@ export const getUsers = async (req: Request, res: Response) => {
 
   }
 };
+
+
+export const getUserByTraineeId = async (req: Request, res: Response) => {
+  try {
+    const traineeId = req?.params?.traineeId;
+    const user = await userService.getByTraineeId(traineeId);
+
+    res.status(200).json( user );
+  } catch (error) {
+    AppError.handleResponse(res, error);
+  }
+}
