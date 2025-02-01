@@ -8,7 +8,7 @@ const sanitizeDto = (dto: TPersonalTrainingDto): TPersonalTrainingDto => {
   const instructions =
     sanitizeUtil.SanitizedObjectField(dto?.instructions) || "";
   const trainingId = sanitizeUtil.SanitizedObjectField(dto?.trainingId) || "";
-  const programId = sanitizeUtil.SanitizedObjectField(dto?.programId) || "";
+  const programId = sanitizeUtil.SanitizedObjectField(dto?.programId) || undefined;
 
   const traineeId = sanitizeUtil.SanitizedObjectField(dto?.traineeId) || "";
   const id = sanitizeUtil.SanitizedObjectField(dto?.id) || undefined;

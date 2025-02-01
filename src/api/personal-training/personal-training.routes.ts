@@ -1,5 +1,6 @@
 import { Router } from "express";
-import { createPersonalTraining } from "./personal-training.controller";
+import { savePersonalTraining } from "./personal-training.controller";
 
 export const personalTrainingRoutes = Router();
-personalTrainingRoutes.post("/create", createPersonalTraining);
+personalTrainingRoutes.post("/create", savePersonalTraining);
+personalTrainingRoutes.put("/update", savePersonalTraining);

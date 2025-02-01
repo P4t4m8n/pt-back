@@ -4,39 +4,99 @@ import {
   TPersonalTrainingDto,
 } from "../../types/personal-training.type";
 
-// const save = async (dto: TPersonalTrainingDto): Promise<TPersonalTraining> => {
-//   const { traineeId, trainingId, sets, instructionVideos, id } = dto;
+const update = async (
+  dto: TPersonalTrainingDto
+): Promise<TPersonalTraining> => {
+  const {
+    traineeId,
+    trainingId,
+    setsHistory,
+    instructionVideos,
+    instructions,
+    id,
+    programId,
+  } = dto;
+  console.log("dto:", dto)
 
-//   const updatedSetsIds = sets!
-//     .map((set) => set?.id)
-//     .filter((id): id is string => Boolean(id));
-//   const training = await prisma.training.update({
-//     where: {
-//       id,
-//     },
-//     data: {
-//       name,
-//       description,
-//       trainerId,
-//       defaultSets: {
-//         upsert: defaultSets.map((set) => ({
-//           where: { id: set.id },
-//           update: set,
-//           create: set,
-//         })),
-//         deleteMany: {
-//           id: {
-//             notIn: updatedSetsIds,
-//           },
-//         },
-//       },
-//     },
-//     include: {
-//       ...TRAINING_DETAILS_SELECT,
-//     },
-//   });
-//   return training;
-// };
+  const updatedSetsIds = setsHistory!
+    .map((set) => set?.id)
+    .filter((id): id is string => Boolean(id));
+  const newVideoIds = instructionVideos.map((video) => video.id!);
+
+  const [training] = await prisma.$transaction([
+    prisma.personalTraining.update({
+      where: {
+        id,
+      },
+      data: {
+        trainingId,
+        programId,
+        traineeId,
+        instructions,
+        setsHistory: {
+          upsert: setsHistory.map((set) => ({
+            where: { id: set.id || "" },
+            update: {
+              date: set.date,
+              setType: set.setType,
+              sets: {
+                upsert: set.sets?.map((s) => ({
+                  where: { id: s.id || "" },
+                  update: {
+                    reps: s.reps,
+                    weight: s.weight,
+                    rest: s.rest,
+                  },
+                  create: {
+                    reps: s.reps,
+                    weight: s.weight,
+                    rest: s.rest,
+                  },
+                })),
+              },
+            },
+            create: {
+              date: set.date,
+              setType: set.setType,
+              sets: {
+                create: set.sets?.map((s) => ({
+                  reps: s.reps,
+                  weight: s.weight,
+                  rest: s.rest,
+                })),
+              },
+            },
+          })),
+          deleteMany: {
+            id: {
+              notIn: updatedSetsIds,
+            },
+          },
+        },
+        instructionVideos: {
+          set: newVideoIds.map((id) => ({ id })),
+        },
+      },
+      include: {
+        setsHistory: true,
+        instructionVideos: true,
+        training: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    }),
+    // Get all instruction videos related to this training that aren't in the new set
+    prisma.video.deleteMany({
+      where: {
+        AND: [{ trainerInstructionVideoId: id, id: { notIn: newVideoIds } }],
+      },
+    }),
+  ]);
+  console.log("training:", training)
+  return training;
+};
 
 const create = async (
   dto: TPersonalTrainingDto
@@ -48,6 +108,7 @@ const create = async (
     instructionVideos,
     instructions,
   } = dto;
+  console.log("dto:", dto)
 
   const pt = await prisma.personalTraining.create({
     data: {
@@ -86,4 +147,5 @@ const create = async (
 
 export const personalTrainingService = {
   create,
+  update,
 };
