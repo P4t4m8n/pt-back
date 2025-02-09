@@ -84,6 +84,8 @@ export const signUpWithEmail = async (
  */
 export const googleRedirect = async (req: Request, res: Response) => {
   try {
+    console.log("GOOGLE_REDIRECT_URI:", GOOGLE_REDIRECT_URI);
+    console.log("GOOGLE_CLIENT_ID:", GOOGLE_CLIENT_ID);
     const googleAuthURL = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${GOOGLE_REDIRECT_URI}&response_type=code&scope=email%20profile`;
 
     res.redirect(googleAuthURL);
