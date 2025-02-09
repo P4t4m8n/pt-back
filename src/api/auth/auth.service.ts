@@ -9,8 +9,9 @@ import {
   GOOGLE_CLIENT_SECRET,
   GOOGLE_REDIRECT_URI,
 } from "../../config/env.config";
+import { TAuthSignInDto } from "../../types/auth.type";
 
-const signIn = async (userDto: TUserCreateDto): Promise<TUser> => {
+const signIn = async (userDto: TAuthSignInDto): Promise<TUser> => {
   const { email, password, googleId } = userDto;
 
   const user = await prisma.user.findUnique({
@@ -87,7 +88,7 @@ const signUp = async (dto: TUserCreateDto): Promise<TUser> => {
 const getSessionUser = async (token: string): Promise<TUser | null> => {
   const payload = await authUtil.decodeToken(token);
   if (!payload) return null;
-  const user = await userService.getById(payload.userId as string);
+  const user = await userService.getById(payload?.userId as string);
 
   return user;
 };

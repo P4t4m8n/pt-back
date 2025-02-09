@@ -8,6 +8,7 @@ import Logger from "./Logger.util";
 export class AppError extends Error {
   public readonly statusCode: number;
   public readonly isOperational: boolean;
+  public readonly validationErrors?: Record<string, string>;
 
   /**
    * Creates an instance of `AppError`.
@@ -15,11 +16,13 @@ export class AppError extends Error {
    * @param message - The error message.
    * @param statusCode - HTTP status code (default is 500).
    * @param isOperational - Flag indicating if the error is operational (default is true).
+   * @param validationErrors - Flag indicating if the error is operational (default is true).
    */
   constructor(
     message: string,
     statusCode: number = 500,
-    isOperational: boolean = true
+    isOperational: boolean = true,
+    validationErrors?: Record<string, string>
   ) {
     super(message);
 
@@ -29,6 +32,7 @@ export class AppError extends Error {
     this.name = this.constructor.name;
     this.statusCode = statusCode;
     this.isOperational = isOperational;
+    this.validationErrors = validationErrors;
 
     // Capture stack trace for better debugging
     if (Error.captureStackTrace) {
@@ -69,9 +73,10 @@ export class AppError extends Error {
   public static create(
     message: string,
     statusCode: number = 500,
-    isOperational: boolean = true
+    isOperational: boolean = true,
+    validationErrors?: Record<string, string>
   ): AppError {
-    return new AppError(message, statusCode, isOperational);
+    return new AppError(message, statusCode, isOperational, validationErrors);
   }
 
   /**
@@ -81,9 +86,14 @@ export class AppError extends Error {
    * @param error - The error object to handle. If it is an instance of `AppError`,
    *                it sends the error's status code and message. Otherwise, it creates
    *                a new `AppError` with a 500 status code and sends its message.
+   *                401 status code is used for validation errors return an object with key and error.
    */
   public static handleResponse(res: Response, error: unknown): void {
-    if (error instanceof AppError) {
+    if (error instanceof AppError && error.statusCode === 401) {
+      res
+        .status(error.statusCode)
+        .json({ message: error.message, errors: error.validationErrors });
+    } else if (error instanceof AppError) {
       res.status(error.statusCode).json({ message: error.message });
     } else {
       const err = AppError.create(`Unexpected Error -> ${error}`, 500, false);
@@ -91,4 +101,3 @@ export class AppError extends Error {
     }
   }
 }
-

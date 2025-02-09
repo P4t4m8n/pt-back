@@ -12,7 +12,8 @@
     "migrate": "prisma migrate dev",
     "seed": "ts-node prisma/seed.ts",
     "purge": "psql -U postgres -d trainingDB -f prisma/scripts/purge.sql",
-    "truncate": "psql -U postgres -d trainingDB -f prisma/scripts/truncate.sql"
+    "truncate": "psql -U postgres -d trainingDB -f prisma/scripts/truncate.sql",
+    "test": "jest"
   },
   "keywords": [],
   "author": "",

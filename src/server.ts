@@ -22,8 +22,11 @@ if (NODE_ENV === "production") {
   app.use(express.static(path.resolve("public")));
 } else {
   const corsOptions: cors.CorsOptions = {
-    origin: ["http://127.0.0.1:5173", "http://localhost:5173", "10.0.0.3:8081"],
+    origin: ["http://127.0.0.1:5173", "http://localhost:5173"],
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    exposedHeaders: ["set-cookie"],
   };
   app.use(cors(corsOptions));
 }
@@ -44,7 +47,7 @@ app.use("/api/v1/trainings", trainingRoutes);
 import { metricRoutes } from "./api/metrics/metrics.routes";
 app.use("/api/v1/metrics", metricRoutes);
 
-import { programRoutes } from "./api/program/program.routes";
+import { programRoutes } from "./api/programs/programs.routes";
 app.use("/api/v1/programs", programRoutes);
 
 import { videoRoutes } from "./api/video/video.routes";

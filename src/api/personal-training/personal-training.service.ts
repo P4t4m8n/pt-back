@@ -16,7 +16,6 @@ const update = async (
     id,
     programId,
   } = dto;
-  console.log("dto:", dto)
 
   const updatedSetsIds = setsHistory!
     .map((set) => set?.id)
@@ -94,7 +93,6 @@ const update = async (
       },
     }),
   ]);
-  console.log("training:", training)
   return training;
 };
 
@@ -108,7 +106,6 @@ const create = async (
     instructionVideos,
     instructions,
   } = dto;
-  console.log("dto:", dto)
 
   const pt = await prisma.personalTraining.create({
     data: {

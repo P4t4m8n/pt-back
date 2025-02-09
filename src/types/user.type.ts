@@ -26,7 +26,7 @@ export type TUserCreateDto = {
   firstName: string;
   lastName: string;
   email: string;
-  phone: string | null;
+  phone?: string | null;
   password?: string;
   imgUrl?: string;
   googleId?: string;
