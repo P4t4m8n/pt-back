@@ -51,6 +51,7 @@ import { videoRoutes } from "./api/video/video.routes";
 app.use("/api/v1/videos", videoRoutes);
 
 import { personalTrainingRoutes } from "./api/personal-training/personal-training.routes";
+import { AppError } from "./util/Error.util";
 app.use("/api/v1/personal-trainings", personalTrainingRoutes);
 
 // import { exerciseRoutes } from "./api/exercise/exercise.routes";
@@ -61,7 +62,7 @@ app.use("/api/v1/personal-trainings", personalTrainingRoutes);
 
 // Catch-all route
 app.get("/**", (req: Request, res: Response) => {
-  res.sendFile(path.resolve("./public/index.html"));
+  AppError.handleResponse(res, AppError.create("Route not found", 404));
 });
 
 server.listen(PORT, () =>
