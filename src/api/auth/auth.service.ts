@@ -4,6 +4,11 @@ import { AppError } from "../../util/Error.util";
 import bcrypt from "bcrypt";
 import { authUtil } from "./auth.util";
 import { userService } from "../user/user.service";
+import {
+  GOOGLE_CLIENT_ID,
+  GOOGLE_CLIENT_SECRET,
+  GOOGLE_REDIRECT_URI,
+} from "../../config/env.config";
 
 const signIn = async (userDto: TUserCreateDto): Promise<TUser> => {
   const { email, password, googleId } = userDto;
@@ -88,9 +93,6 @@ const getSessionUser = async (token: string): Promise<TUser | null> => {
 };
 
 const getGoogleToken = async (code: string): Promise<string> => {
-  const CLIENT_ID = process.env.GOOGLE_CLIENT_ID!;
-  const CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET!;
-  const REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI!;
   const tokenResponse = await fetch("https://oauth2.googleapis.com/token", {
     method: "POST",
     headers: {
@@ -98,9 +100,9 @@ const getGoogleToken = async (code: string): Promise<string> => {
     },
     body: new URLSearchParams({
       code,
-      client_id: CLIENT_ID,
-      client_secret: CLIENT_SECRET,
-      redirect_uri: REDIRECT_URI,
+      client_id: GOOGLE_CLIENT_ID,
+      client_secret: GOOGLE_CLIENT_SECRET,
+      redirect_uri: GOOGLE_REDIRECT_URI,
       grant_type: "authorization_code",
     }).toString(),
   });

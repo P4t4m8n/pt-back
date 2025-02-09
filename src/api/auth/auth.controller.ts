@@ -4,6 +4,13 @@ import { AppError } from "../../util/Error.util";
 import { authUtil } from "./auth.util";
 import { authService } from "./auth.service";
 import { asyncLocalStorage } from "../../middlewares/localStorage.middleware";
+import {
+  FRONTEND_URL,
+  GOOGLE_CLIENT_ID,
+  GOOGLE_REDIRECT_URI,
+  JWT_SECRET,
+  NODE_ENV,
+} from "../../config/env.config";
 
 export const signInEmail = async (req: Request, res: Response) => {
   try {
@@ -45,9 +52,7 @@ export const signUpWithEmail = async (req: Request, res: Response) => {
 
 export const googleRedirect = async (req: Request, res: Response) => {
   try {
-    const CLIENT_ID = process.env.GOOGLE_CLIENT_ID!;
-    const REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI;
-    const googleAuthURL = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=email%20profile`;
+    const googleAuthURL = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${GOOGLE_REDIRECT_URI}&response_type=code&scope=email%20profile`;
 
     res.redirect(googleAuthURL);
   } catch (error) {
@@ -83,7 +88,7 @@ export const googleCallback = async (req: Request, res: Response) => {
     }
 
     const token = await createJWT(user.id!);
-    res.cookie("token", token, COOKIE).redirect(process.env.FRONTEND_URL!);
+    res.cookie("token", token, COOKIE).redirect(FRONTEND_URL);
   } catch (error) {
     AppError.handleResponse(res, error);
   }
@@ -115,7 +120,7 @@ const createJWT = async (
   alg: string = "HS256",
   expiration: string = "24h"
 ) => {
-  const secret = new TextEncoder().encode(process.env.JWT_SECRET);
+  const secret = new TextEncoder().encode(JWT_SECRET);
   return new SignJWT({ userId })
     .setProtectedHeader({ alg })
     .setExpirationTime(expiration)
@@ -124,8 +129,8 @@ const createJWT = async (
 
 export const COOKIE: CookieOptions = {
   httpOnly: true,
-  secure: process.env.NODE_ENV === "production",
-  sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+  secure: NODE_ENV === "production",
+  sameSite: NODE_ENV === "production" ? "none" : "lax",
   path: "/",
   maxAge: 24 * 60 * 60 * 1000, // 24 hours
 };

@@ -3,13 +3,24 @@ import { AsyncLocalStorage } from "async_hooks";
 import { TUser } from "../types/user.type";
 import { authService } from "../api/auth/auth.service";
 import { AppError } from "../util/Error.util";
-
-export interface AsyncStorageData {
+/**
+ * Represents the data stored in the AsyncLocalStorage.
+ * @property {TUser} [loggedinUser] - Currently logged-in user's data.
+ */
+interface AsyncStorageData {
   loggedinUser?: TUser;
 }
-
+/**
+ * The AsyncLocalStorage instance used for storing user-related data.
+ */
 export const asyncLocalStorage = new AsyncLocalStorage<AsyncStorageData>();
-
+/**
+ * Middleware that sets up and runs the AsyncLocalStorage context for each request.
+ * If a valid token exists in cookies, extracts the logged-in user and stores it.
+ * @param {Request} req - Express Request object
+ * @param {Response} res - Express Response object
+ * @param {NextFunction} next - Express NextFunction callback
+ */
 export async function setupAsyncLocalStorage(
   req: Request,
   res: Response,
@@ -23,7 +34,7 @@ export async function setupAsyncLocalStorage(
     }
 
     const token = req?.cookies?.token;
-    if (typeof token !== "string") {
+    if (!token || typeof token !== "string") {
       return next();
     }
     try {

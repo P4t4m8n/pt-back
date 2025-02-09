@@ -3,6 +3,7 @@ import { TUserCreateDto, TUserUpdateDto } from "../../types/user.type";
 import { sanitizeUtil } from "../../util/sanitize.util";
 import { validationUtil } from "../../util/validation.util";
 import { jwtVerify } from "jose";
+import { JWT_SECRET } from "../../config/env.config";
 
 const formDataToUserDTO = (formData: FormData): TUserCreateDto => {
   const email = sanitizeUtil.SanitizedFormField(formData, "email");
@@ -66,7 +67,7 @@ const validateUserDto = (userDto: TUserCreateDto | TUserUpdateDto) => {
 
 const decodeToken = async (token?: string) => {
   if (!token) return null;
-  const secret = new TextEncoder().encode(process.env.JWT_SECRET);
+  const secret = new TextEncoder().encode(JWT_SECRET);
   const { payload } = await jwtVerify(token, secret);
 
   return payload;
