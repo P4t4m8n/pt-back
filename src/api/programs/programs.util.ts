@@ -8,9 +8,9 @@ const sanitizeFilter = (): TProgramFilter => {
 };
 
 const sanitizeDto = (dto: TProgramDto): TProgramDto => {
-  const name = sanitizeUtil.SanitizedObjectField(dto?.name);
-  const startDate = dto?.startDate ? new Date(dto?.startDate) : null;
-  const endDate = dto?.endDate ? new Date(dto?.endDate) : null;
+  const name = sanitizeUtil.SanitizedObjectField(dto?.name) || "";
+  const startDate = dto?.startDate ? new Date(dto?.startDate) : new Date();
+  const endDate = dto?.endDate ? new Date(dto?.endDate) : new Date();
   const isActive = sanitizeUtil.SanitizedBoolean(dto?.isActive);
 
   const traineeId = sanitizeUtil.SanitizedObjectField(dto?.traineeId) || null;
@@ -52,12 +52,14 @@ const validateDto = (dto: TProgramDto): Record<keyof TProgramDto, string> => {
     errorsMap.endDate = endDateError;
   }
 
-  const trainerIdError = validationUtil.validateExistence(
-    "Trainer ID",
-    trainerId
-  );
-  if (trainerIdError) {
-    errorsMap.trainerId = trainerIdError;
+  if (trainerId) {
+    const trainerIdError = validationUtil.validateExistence(
+      "Trainer ID",
+      trainerId
+    );
+    if (trainerIdError) {
+      errorsMap.trainerId = trainerIdError;
+    }
   }
 
   const traineeIdError = validationUtil.validateExistence(

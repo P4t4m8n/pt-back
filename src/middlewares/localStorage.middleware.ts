@@ -32,9 +32,8 @@ export async function setupAsyncLocalStorage(
     if (!req.cookies) {
       return next();
     }
-    
+
     const token = req?.cookies?.token;
-    console.log("token:", token)
     if (!token || typeof token !== "string") {
       return next();
     }

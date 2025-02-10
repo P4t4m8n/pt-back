@@ -97,9 +97,9 @@ model Trainer {
 model Program {
   id        String             @id @default(uuid())
   name      String             @default("Program")
-  startDate DateTime
-  endDate   DateTime
-  isActive  Boolean
+  startDate DateTime           @default(now())
+  endDate   DateTime           @default(now())
+  isActive  Boolean            @default(true)
   days      DaysOfWeek[]
   trainings PersonalTraining[]
   traineeId String?

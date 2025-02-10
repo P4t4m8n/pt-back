@@ -30,14 +30,12 @@ export const saveProgram = async (
 ): Promise<void> => {
   try {
     const data = req.body;
+    console.log("data:", data)
 
     const dto = programUtil.sanitizeDto(data);
-    const errors = programUtil.validateDto(dto);
-    if (Object.keys(errors).length) {
-      //TODO add validation errors to error class to return a json instead of massage
-      AppError.create(`Invalid data-> ${JSON.stringify(errors)} `, 403);
-      res.status(403).json({ ...errors });
-      return;
+    const validationErrors = programUtil.validateDto(dto);
+    if (Object.keys(validationErrors).length) {
+      throw AppError.create("Validation Error", 400, true, validationErrors);
     }
 
     const program = await programService.save(dto);

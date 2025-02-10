@@ -73,7 +73,9 @@ const signUp = async (dto: TUserCreateDto): Promise<TUser> => {
   delete dto?.googleId;
 
   const user = await prisma.user.create({
-    data: { ...dto, passwordHash, googleIdHash },
+    data: { ...dto, passwordHash, googleIdHash,trainee:{
+      create:{}
+    } },
     select: {
       id: true,
       firstName: true,

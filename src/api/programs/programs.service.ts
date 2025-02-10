@@ -5,31 +5,30 @@ import {
   TProgramFilter,
 } from "../../types/program.type";
 
-//Only use AFTER validation
-//TODO split dto to before and after validation
 const save = async (dto: TProgramDto): Promise<TProgram> => {
-  const { name, startDate, endDate, isActive, days, trainerId, traineeId } =
+  const { name, startDate, endDate, isActive, days, trainerId, traineeId, id } =
     dto;
   const program = await prisma.program.upsert({
-    where: { id: dto?.id || "" },
+    where: { id },
     update: {
       ...dto,
-      name: name!,
-      startDate: startDate!,
-      endDate: endDate!,
-      traineeId: traineeId!,
-      trainerId: trainerId!,
-      days: days!,
+      name: name,
+      startDate: startDate,
+      endDate: endDate,
+      traineeId: traineeId,
+      trainerId: trainerId,
+      days: days,
+      isActive: isActive,
     },
     create: {
       ...dto,
-      name: name!,
-      startDate: startDate!,
-      endDate: endDate!,
-      traineeId: traineeId!,
-      trainerId: trainerId!,
-      isActive: isActive!,
-      days: days!,
+      name: name,
+      startDate: startDate,
+      endDate: endDate,
+      traineeId: traineeId,
+      trainerId: trainerId,
+      isActive: isActive,
+      days: days,
     },
   });
 
@@ -49,10 +48,6 @@ const get = async (filter: TProgramFilter): Promise<TProgram[]> => {
         { traineeId },
         { trainerId },
       ],
-    },
-
-    include: {
-      trainings: true,
     },
   });
 

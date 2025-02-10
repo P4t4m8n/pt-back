@@ -86,10 +86,10 @@ export class AppError extends Error {
    * @param error - The error object to handle. If it is an instance of `AppError`,
    *                it sends the error's status code and message. Otherwise, it creates
    *                a new `AppError` with a 500 status code and sends its message.
-   *                401 status code is used for validation errors return an object with key and error.
+   *                400 status code is used for validation errors return an object with key and error.
    */
   public static handleResponse(res: Response, error: unknown): void {
-    if (error instanceof AppError && error.statusCode === 401) {
+    if (error instanceof AppError && error.statusCode === 400) {
       res
         .status(error.statusCode)
         .json({ message: error.message, errors: error.validationErrors });
