@@ -24,10 +24,13 @@ const validateStrLength = (
  */
 const validateArrayLength = (
   filedName: string,
-  arr: unknown[],
+  arr: unknown[] | null | undefined,
   length: number
 ): string | null => {
-  if (arr.length < length) {
+  if (!arr) {
+    return `${filedName} is required.`;
+  }
+  if (arr?.length < length) {
     return `At least ${length} ${filedName} is required.`;
   }
   return null;
@@ -69,13 +72,8 @@ const validateLettersAndNumbers = (
  * @param value - String to validate.
  * @returns An error message or null if valid.
  */
-const validateLetters = (
-  filedName: string,
-  value?: string | null | undefined
-): string | null => {
-  if (value === null || value === undefined) {
-    return `${filedName} is required.`;
-  }
+const validateLetters = (filedName: string, value?: string): string | null => {
+  if (value === null || value === undefined) return null;
   if (!/^[a-zA-Z]+$/.test(value)) {
     return `${filedName} contain only letters.`;
   }
@@ -136,7 +134,6 @@ const validateDateStr = (filedName: string, value?: string): string | null => {
   }
   return null;
 };
-
 
 /**
  * Provides validation utilities for various data types.

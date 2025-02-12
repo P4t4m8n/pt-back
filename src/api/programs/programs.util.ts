@@ -37,6 +37,11 @@ const validateDto = (dto: TProgramDto): Record<keyof TProgramDto, string> => {
 
   const { name, startDate, endDate, days, trainerId, traineeId } = dto;
 
+  const nameExistenceError = validationUtil.validateExistence("Name", name);
+  if (nameExistenceError) {
+    errorsMap.name = nameExistenceError;
+  }
+
   const nameError = validationUtil.validateLetters("Name", name);
   if (nameError) {
     errorsMap.name = nameError;
@@ -69,7 +74,10 @@ const validateDto = (dto: TProgramDto): Record<keyof TProgramDto, string> => {
   if (traineeIdError) {
     errorsMap.traineeId = traineeIdError;
   }
-
+  const dayExistenceError = validationUtil.validateArrayLength("Days", days, 1);
+  if (dayExistenceError) {
+    errorsMap.days = dayExistenceError;
+  }
   const daysError = days?.map((day, index) => {
     if (Object.values(DaysOfWeek).includes(day)) {
       return null;

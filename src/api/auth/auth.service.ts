@@ -19,7 +19,10 @@ const signIn = async (userDto: TAuthSignInDto): Promise<TUser> => {
   });
 
   if (!user || !user?.email || !user?.id) {
-    throw AppError.create("User not found", 404, true);
+    throw AppError.create("User not found", 404, true, {
+      email: "Incorrect email",
+      password: "Incorrect password",
+    });
   }
 
   if (user?.passwordHash && password) {
@@ -73,9 +76,14 @@ const signUp = async (dto: TUserCreateDto): Promise<TUser> => {
   delete dto?.googleId;
 
   const user = await prisma.user.create({
-    data: { ...dto, passwordHash, googleIdHash,trainee:{
-      create:{}
-    } },
+    data: {
+      ...dto,
+      passwordHash,
+      googleIdHash,
+      trainee: {
+        create: {},
+      },
+    },
     select: {
       id: true,
       firstName: true,

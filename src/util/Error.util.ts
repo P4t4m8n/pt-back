@@ -89,7 +89,11 @@ export class AppError extends Error {
    *                400 status code is used for validation errors return an object with key and error.
    */
   public static handleResponse(res: Response, error: unknown): void {
-    if (error instanceof AppError && error.statusCode === 400) {
+    if (
+      error instanceof AppError &&
+      error.statusCode >= 400 &&
+      error.statusCode < 500
+    ) {
       res
         .status(error.statusCode)
         .json({ message: error.message, errors: error.validationErrors });

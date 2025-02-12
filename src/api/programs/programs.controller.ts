@@ -30,14 +30,22 @@ export const saveProgram = async (
 ): Promise<void> => {
   try {
     const data = req.body;
-    console.log("data:", data)
 
     const dto = programUtil.sanitizeDto(data);
+
+    if (!dto?.traineeId) {
+      const traineeId =
+        asyncLocalStorage?.getStore()?.loggedinUser?.trainee?.id;
+      if (!traineeId) {
+        throw AppError.create("Not Authorized", 403);
+      }
+
+      dto.traineeId = traineeId;
+    }
     const validationErrors = programUtil.validateDto(dto);
     if (Object.keys(validationErrors).length) {
       throw AppError.create("Validation Error", 400, true, validationErrors);
     }
-
     const program = await programService.save(dto);
     res.status(200).json(program);
   } catch (error) {

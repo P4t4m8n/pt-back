@@ -8,7 +8,7 @@
     "lint": "eslint .",
     "dev": "nodemon --exec ts-node   src/server.ts",
     "build": "tsc",
-    "gen": "pnpm prisma generate",
+    "gen": "npx prisma generate",
     "migrate": "prisma migrate dev",
     "seed": "ts-node prisma/seed.ts",
     "purge": "psql -U postgres -d trainingDB -f prisma/scripts/purge.sql",

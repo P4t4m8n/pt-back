@@ -9,9 +9,8 @@ const save = async (dto: TProgramDto): Promise<TProgram> => {
   const { name, startDate, endDate, isActive, days, trainerId, traineeId, id } =
     dto;
   const program = await prisma.program.upsert({
-    where: { id },
+    where: { id: id || "" },
     update: {
-      ...dto,
       name: name,
       startDate: startDate,
       endDate: endDate,
@@ -21,7 +20,6 @@ const save = async (dto: TProgramDto): Promise<TProgram> => {
       isActive: isActive,
     },
     create: {
-      ...dto,
       name: name,
       startDate: startDate,
       endDate: endDate,
