@@ -24,6 +24,20 @@ export const getProgramsByUser = async (
     AppError.handleResponse(res, error);
   }
 };
+
+export const getProgramById = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const { id } = req.params;
+
+    const program = await programService.get({ id,includeTrainings:true });
+    res.status(200).json(program);
+  } catch (error) {
+    AppError.handleResponse(res, error);
+  }
+};
 export const saveProgram = async (
   req: Request,
   res: Response

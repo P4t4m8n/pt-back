@@ -34,7 +34,16 @@ const save = async (dto: TProgramDto): Promise<TProgram> => {
 };
 
 const get = async (filter: TProgramFilter): Promise<TProgram[]> => {
-  const { name, startDate, endDate, isActive, traineeId, trainerId } = filter;
+  const {
+    name,
+    startDate,
+    endDate,
+    isActive,
+    traineeId,
+    trainerId,
+    id,
+    includeTrainings,
+  } = filter;
 
   const programs = await prisma.program.findMany({
     where: {
@@ -45,7 +54,11 @@ const get = async (filter: TProgramFilter): Promise<TProgram[]> => {
         { isActive },
         { traineeId },
         { trainerId },
+        { id },
       ],
+    },
+    include: {
+      trainings: includeTrainings,
     },
   });
 

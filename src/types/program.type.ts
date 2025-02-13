@@ -5,9 +5,9 @@ import { TTrainer } from "./trainer.type";
 import { TTrainee } from "./trainee.type";
 
 export type TProgram = TEntity & {
-  name?: string ;
-  startDate?: string | Date ;
-  endDate?: string | Date ;
+  name?: string;
+  startDate?: string | Date;
+  endDate?: string | Date;
   isActive?: boolean;
   days?: DaysOfWeek[];
   trainings?: TPersonalTraining[];
@@ -27,4 +27,6 @@ export type TProgramFilter = {
   isActive?: boolean;
   traineeId?: string;
   trainerId?: string;
+  id?: string;
+  includeTrainings?: boolean;
 };
