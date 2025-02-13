@@ -10,11 +10,14 @@ const sanitizeDto = (dto: TTrainingDto): TTrainingDto => {
 
   const trainerId = sanitizeUtil.SanitizedObjectField(dto?.trainerId) || "";
 
+  const bodyPart = sanitizeUtil.SanitizedObjectField(dto?.bodyPart) || "";
+
   return {
     name,
     description,
     defaultSets,
     trainerId,
+    bodyPart,
   };
 };
 const sanitizeFilter = (filter: Partial<TTrainingFilter>): TTrainingFilter => {

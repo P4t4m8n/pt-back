@@ -8,6 +8,8 @@ export type TTraineeTraining = TEntity & {
   personalTraining: TPersonalTraining;
   sets: TSetHistory[];
   feedbackVideos: TVideo[];
+  jointPain: boolean;
+  notes: string;
 };
 
 export type TTraineeTrainingDto = TEntity &

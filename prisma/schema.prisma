@@ -47,6 +47,13 @@ enum SetType {
   TRAINER_HISTORY
 }
 
+enum TrainingType {
+  WARM_UP
+  STRETCH
+  CARDIO
+  STRENGTH
+}
+
 model User {
   id           String   @id @default(uuid())
   firstName    String   @default("")
@@ -116,6 +123,11 @@ model Training {
   trainingAssignments PersonalTraining[]
   trainerId           String?
   trainer             Trainer?           @relation(fields: [trainerId], references: [id], onDelete: Cascade)
+  bodyPart            String             @default("")
+  imgUrl              String?
+  defaultVideoId      String?
+  defaultVideo        Video?             @relation(fields: [defaultVideoId], references: [id], onDelete: SetNull)
+  trainingType        TrainingType       @default(STRENGTH)
 }
 
 model Set {
@@ -161,6 +173,8 @@ model TraineeTraining {
   personalTraining   PersonalTraining @relation(fields: [personalTrainingId], references: [id], onDelete: Cascade)
   setsHistory        SetHistory[]
   feedbackVideos     Video[]
+  jointPain          Boolean          @default(false)
+  notes              String           @default("")
 }
 
 model Video {
@@ -176,4 +190,5 @@ model Video {
   trainerInstructionVideoId String?
   traineeTrainingId         String?
   traineeTraining           TraineeTraining?  @relation(fields: [traineeTrainingId], references: [id])
+  training                  Training[]
 }

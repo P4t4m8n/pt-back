@@ -82,6 +82,7 @@ const update = async (
         training: {
           select: {
             name: true,
+            bodyPart: true,
           },
         },
       },

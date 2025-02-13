@@ -38,6 +38,7 @@ const get = async (filter: TTrainingFilter): Promise<TTraining[]> => {
       name: true,
       description: true,
       defaultSets: true,
+      bodyPart: true,
     },
   });
 
